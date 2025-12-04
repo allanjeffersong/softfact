@@ -28,13 +28,13 @@ public class AlunoCommandController {
     @PostMapping
     public AlunoResponse criar(@RequestBody @Valid AlunoCreateRequest request) {
         var dominio = createMapper.toDomain(request);
-        return service.criar(dominio);
+        return service.criar(dominio, request.stacksIds());
     }
 
     @PutMapping("/{id}")
     public AlunoResponse atualizar(@PathVariable Long id, @RequestBody @Valid AlunoUpdateRequest request) {
         var dominio = updateMapper.toDomain(request);
-        return service.atualizar(id, dominio);
+        return service.atualizar(id, dominio, request.stacksIds());
     }
 
     @DeleteMapping("/{id}")
