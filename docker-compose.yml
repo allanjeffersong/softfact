@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: softfact-postgres
+    environment:
+      POSTGRES_DB: softfact
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - softfact-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  softfact-network:
+    driver: bridge
