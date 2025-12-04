@@ -35,16 +35,7 @@ public class AlunoQueryServiceImpl implements AlunoQueryService {
         if (termo == null || termo.isBlank()) {
             page = repo.findAll(pageable);
         } else {
-            ExampleMatcher matcher = ExampleMatcher.matchingAny()
-                    .withIgnoreNullValues()
-                    .withMatcher("nome", m -> m.contains().ignoreCase())
-                    .withMatcher("email", m -> m.contains().ignoreCase())
-                    .withMatcher("matricula", m -> m.contains().ignoreCase());
-            AlunoEntity probe = new AlunoEntity();
-            probe.setNome(termo);
-            probe.setEmail(termo);
-            probe.setMatricula(termo);
-            page = repo.findAll(Example.of(probe, matcher), pageable);
+            page = repo.buscarPorTermo(termo, pageable);
         }
         return page.map(this::toResponse);
     }

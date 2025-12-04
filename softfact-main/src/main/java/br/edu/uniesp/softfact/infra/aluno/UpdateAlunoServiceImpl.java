@@ -25,15 +25,19 @@ public class UpdateAlunoServiceImpl implements UpdateAlunoService {
     private final AlunoEntityMapper entityMapper;
 
     @Override
-    public AlunoResponse criar(Aluno dto) {
+    public AlunoResponse criar(Aluno dto, Set<Long> stacksIds) {
         if (repo.existsByEmail(dto.getEmail())) {
             throw new DataIntegrityViolationException("E-mail já cadastrado.");
         }
-        return entityMapper.toResponse(repo.save(entityMapper.toEntity(dto)));
+
+        AlunoEntity entity = entityMapper.toEntity(dto);
+        entity.setStacks(buscarStacks(stacksIds));
+
+        return entityMapper.toResponse(repo.save(entity));
     }
 
     @Override
-    public AlunoResponse atualizar(Long id, Aluno dto) {
+    public AlunoResponse atualizar(Long id, Aluno dto, Set<Long> stacksIds) {
         AlunoEntity existente = repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado: " + id));
 
@@ -50,7 +54,7 @@ public class UpdateAlunoServiceImpl implements UpdateAlunoService {
         existente.setCurso(dto.getCurso());
         existente.setMatricula(dto.getMatricula());
         existente.setPeriodo(dto.getPeriodo());
-        existente.setStacks(buscarStacks(dto.getStacks().stream().map(StackTecnologia::getId).collect(Collectors.toSet())));
+        existente.setStacks(buscarStacks(stacksIds));
 
         return entityMapper.toResponse(existente);
     }

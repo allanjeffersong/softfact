@@ -9,16 +9,11 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
 public record AlunoUpdateRequest(
-        @NotBlank
-        String nome,
-        @NotBlank @Email
-        String email,
+        @NotBlank String nome,
+        @NotBlank @Email String email,
         String telefone,
         @NotNull Curso curso,
-        @NotBlank String
-        matricula,
-        @NotNull
-        Periodo periodo,
-        Set<Long>
-        stacksIds
+        @NotBlank String matricula,
+        @NotNull Periodo periodo,
+        Set<Long> stacksIds
 ) {}
